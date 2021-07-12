@@ -259,6 +259,7 @@ define build_gsoap
     # get archive
     if [ ! -f SDK/gsoap.zip ]; then \
         mkdir -p SDK; \
+	wget -O ./SDK/gsoap.zip.tmp "https://dl.t2-project.org/mirror/trunk/g/gsoap_$(GSOAP_VERSION).zip" || \
 	wget -O ./SDK/gsoap.zip.tmp "https://sourceforge.net/projects/gsoap2/files/gsoap_$(GSOAP_VERSION).zip/download"   || \
         wget -O ./SDK/gsoap.zip.tmp "https://sourceforge.net/projects/gsoap2/files/gsoap-2.8/gsoap_$(GSOAP_VERSION).zip/download"   || \
         wget -O ./SDK/gsoap.zip.tmp "https://sourceforge.net/projects/gsoap2/files/oldreleases/gsoap_$(GSOAP_VERSION).zip/download" || \
