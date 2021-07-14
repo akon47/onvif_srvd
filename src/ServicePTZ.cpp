@@ -127,9 +127,9 @@ int PTZBindingService::GotoPreset(_tptz__GotoPreset *tptz__GotoPreset, _tptz__Go
         return SOAP_OK;
     }
 
-    if (!ctx->get_ptz_node()->get_move_preset().empty())
+    if (!ctx->get_ptz_node()->get_goto_preset().empty())
     {
-        preset_cmd = ctx->get_ptz_node()->get_move_preset().c_str();
+        preset_cmd = ctx->get_ptz_node()->get_goto_preset().c_str();
     }
     else
     {
@@ -286,25 +286,14 @@ int PTZBindingService::GotoHomePosition(_tptz__GotoHomePosition *tptz__GotoHomeP
         return SOAP_OK;
     }
 
-    if (!ctx->get_ptz_node()->get_move_preset().empty())
+    if (!ctx->get_ptz_node()->get_goto_home().empty())
     {
-        preset_cmd = ctx->get_ptz_node()->get_move_preset().c_str();
+        curl_get(ctx->get_ptz_node()->get_goto_home().c_str());
     }
     else
     {
         return SOAP_OK;
     }
-
-    std::string template_str_t("%t");
-
-    auto it_t = preset_cmd.find(template_str_t, 0);
-
-    if (it_t != std::string::npos)
-    {
-        preset_cmd.replace(it_t, template_str_t.size(), "1");
-    }
-
-    curl_get(preset_cmd.c_str());
 
     return SOAP_OK;
 }

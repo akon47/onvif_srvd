@@ -102,7 +102,8 @@ namespace LongOpts
         ptz,
         move_continuous,
         move_stop,
-        move_preset
+        goto_preset,
+        goto_home
     };
 }
 
@@ -145,7 +146,8 @@ static const struct option long_opts[] =
         {"ptz", no_argument, NULL, LongOpts::ptz},
         {"move_continuous", required_argument, NULL, LongOpts::move_continuous},
         {"move_stop", required_argument, NULL, LongOpts::move_stop},
-        {"move_preset", required_argument, NULL, LongOpts::move_preset},
+        {"goto_preset", required_argument, NULL, LongOpts::goto_preset},
+        {"goto_home", required_argument, NULL, LongOpts::goto_home},
 
         {NULL, no_argument, NULL, 0}};
 
@@ -370,9 +372,14 @@ void processing_cmd(int argc, char *argv[])
 
             break;
 
-        case LongOpts::move_preset:
-            if (!service_ctx.get_ptz_node()->set_move_preset(optarg))
+        case LongOpts::goto_preset:
+            if (!service_ctx.get_ptz_node()->set_goto_preset(optarg))
                 daemon_error_exit("Can't set url for goto preset movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
+
+            break;
+        case LongOpts::goto_home:
+            if (!service_ctx.get_ptz_node()->set_goto_home(optarg))
+                daemon_error_exit("Can't set url for goto home movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
 
             break;
 
@@ -561,10 +568,15 @@ void processing_conf_file()
             if (!service_ctx.get_ptz_node()->set_move_stop(value.c_str()))
                 daemon_error_exit("Can't set url for stop movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
         }
-        else if (param == "move_preset")
+        else if (param == "goto_preset")
         {
-            if (!service_ctx.get_ptz_node()->set_move_preset(value.c_str()))
+            if (!service_ctx.get_ptz_node()->set_goto_preset(value.c_str()))
                 daemon_error_exit("Can't set url for goto preset movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
+        }
+        else if (param == "goto_home")
+        {
+            if (!service_ctx.get_ptz_node()->set_goto_home(value.c_str()))
+                daemon_error_exit("Can't set url for goto home movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
         }
         else
         {

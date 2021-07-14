@@ -580,7 +580,8 @@ void PTZNode::clear()
 {
     enable = false;
     move_stop.clear();
-    move_preset.clear();
+    goto_preset.clear();
+    goto_home.clear();
     move_continuous.clear();
 }
 
