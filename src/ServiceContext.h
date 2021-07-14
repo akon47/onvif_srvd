@@ -61,9 +61,14 @@ public:
     std::string get_move_stop(void) const { return move_stop; }
     std::string get_goto_preset(void) const { return goto_preset; }
     std::string get_goto_home(void) const { return goto_home; }
-    std::string get_move_continuous(float x, float y) const
+    std::string get_move_continuous(float x, float y, float z, bool onlySendPanTilt, bool onlySendZoom) const
     {
-        return move_continuous + std::string("?x=") + std::to_string(x) + std::string("&y=") + std::to_string(y);
+        return move_continuous +
+               std::string("?x=") + std::to_string(x) +
+               std::string("&y=") + std::to_string(y) +
+               std::string("&z=") + std::to_string(z) +
+               std::string("&onlySendPanTilt=") + std::string(onlySendPanTilt ? "true" : "false") +
+               std::string("&onlySendZoom=") + std::string(onlySendZoom ? "true" : "false");
     }
 
     //methods for parsing opt from cmd

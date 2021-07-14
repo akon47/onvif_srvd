@@ -318,12 +318,35 @@ int PTZBindingService::ContinuousMove(_tptz__ContinuousMove *tptz__ContinuousMov
     {
         return SOAP_OK;
     }
-    if (tptz__ContinuousMove->Velocity->PanTilt == NULL)
+    if (tptz__ContinuousMove->Velocity->PanTilt == NULL && tptz__ContinuousMove->Velocity->Zoom == NULL)
     {
         return SOAP_OK;
     }
 
-    curl_get(ctx->get_ptz_node()->get_move_continuous(tptz__ContinuousMove->Velocity->PanTilt->x, tptz__ContinuousMove->Velocity->PanTilt->y).c_str());
+    if (tptz__ContinuousMove->Velocity->PanTilt != NULL && tptz__ContinuousMove->Velocity->Zoom != NULL)
+    {
+        curl_get(ctx->get_ptz_node()->get_move_continuous(
+                                        tptz__ContinuousMove->Velocity->PanTilt->x,
+                                        tptz__ContinuousMove->Velocity->PanTilt->y,
+                                        tptz__ContinuousMove->Velocity->Zoom->x, false, false)
+                     .c_str());
+    }
+    else if (tptz__ContinuousMove->Velocity->PanTilt != NULL)
+    {
+        curl_get(ctx->get_ptz_node()->get_move_continuous(
+                                        tptz__ContinuousMove->Velocity->PanTilt->x,
+                                        tptz__ContinuousMove->Velocity->PanTilt->y,
+                                        0, true, false)
+                     .c_str());
+    }
+    else if (tptz__ContinuousMove->Velocity->Zoom != NULL)
+    {
+        curl_get(ctx->get_ptz_node()->get_move_continuous(
+                                        0,
+                                        0,
+                                        tptz__ContinuousMove->Velocity->Zoom->x, false, true)
+                     .c_str());
+    }
 
     return SOAP_OK;
 }
@@ -343,16 +366,36 @@ int PTZBindingService::RelativeMove(_tptz__RelativeMove *tptz__RelativeMove, _tp
     {
         return SOAP_OK;
     }
-    if (tptz__RelativeMove->Translation->PanTilt == NULL)
+    if (tptz__RelativeMove->Translation->PanTilt == NULL && tptz__RelativeMove->Translation->Zoom == NULL)
     {
         return SOAP_OK;
     }
 
-    if(tptz__RelativeMove->Translation->PanTilt->x != 0 || tptz__RelativeMove->Translation->PanTilt->y != 0)
+    if (tptz__RelativeMove->Translation->PanTilt != NULL && tptz__RelativeMove->Translation->Zoom != NULL)
     {
-        curl_get(ctx->get_ptz_node()->get_move_continuous(tptz__RelativeMove->Translation->PanTilt->x, tptz__RelativeMove->Translation->PanTilt->y).c_str());
+        curl_get(ctx->get_ptz_node()->get_move_continuous(
+                                        tptz__RelativeMove->Translation->PanTilt->x,
+                                        tptz__RelativeMove->Translation->PanTilt->y,
+                                        tptz__RelativeMove->Translation->Zoom->x, false, false)
+                     .c_str());
         usleep(300000);
         curl_get(ctx->get_ptz_node()->get_move_stop().c_str());
+    }
+    else if (tptz__RelativeMove->Translation->PanTilt != NULL)
+    {
+        curl_get(ctx->get_ptz_node()->get_move_continuous(
+                                        tptz__RelativeMove->Translation->PanTilt->x,
+                                        tptz__RelativeMove->Translation->PanTilt->y,
+                                        0, true, false)
+                     .c_str());
+    }
+    else if (tptz__RelativeMove->Translation->Zoom != NULL)
+    {
+        curl_get(ctx->get_ptz_node()->get_move_continuous(
+                                        0,
+                                        0,
+                                        tptz__RelativeMove->Translation->Zoom->x, false, true)
+                     .c_str());
     }
 
     return SOAP_OK;
