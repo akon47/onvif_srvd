@@ -579,13 +579,9 @@ bool StreamProfile::is_valid() const
 void PTZNode::clear()
 {
     enable = false;
-
-    move_left.clear();
-    move_right.clear();
-    move_up.clear();
-    move_down.clear();
     move_stop.clear();
     move_preset.clear();
+    move_continuous.clear();
 }
 
 

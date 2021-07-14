@@ -6,10 +6,6 @@
 
 #include "soapH.h"
 
-
-
-
-
 template<typename T>
 T* soap_new_ptr(struct soap* soap, T value)
 {
@@ -18,9 +14,5 @@ T* soap_new_ptr(struct soap* soap, T value)
 
     return ptr;
 }
-
-
-
-
 
 #endif // STOOLS_H
