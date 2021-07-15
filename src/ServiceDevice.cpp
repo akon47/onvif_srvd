@@ -493,6 +493,7 @@ int DeviceBindingService::GetNetworkInterfaces(_tds__GetNetworkInterfaces *tds__
 
         tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->Manual.back()->Address = tmp_buf;
         tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->Manual.back()->PrefixLength = ctx->eth_ifs[i].get_mask_prefix();
+        tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->DHCP = true;
 
     }
 
